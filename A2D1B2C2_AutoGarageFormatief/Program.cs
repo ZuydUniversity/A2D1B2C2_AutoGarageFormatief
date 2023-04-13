@@ -1,4 +1,5 @@
 ﻿using A2D1B2C2_AutoGarageFormatief.Model;
+using System.Threading.Channels;
 
 namespace A2D1B2C2_AutoGarageFormatief
 {
@@ -8,6 +9,7 @@ namespace A2D1B2C2_AutoGarageFormatief
         {
             Console.WriteLine("Autogarage");
 
+            // show data
             foreach (var owner in CarOwner.ReadCarOwners())
             {
                 Console.WriteLine($"Owner: {owner.Name} (ID = {owner.Id})");
@@ -71,6 +73,39 @@ namespace A2D1B2C2_AutoGarageFormatief
                 }
             }
 
+            Console.WriteLine("Create vehicle for owner 1");
+            var ownerToAdd = CarOwner.ReadCarOwners().FirstOrDefault(o => o.Id == 1);
+
+            Vehicle addVehicle = new CommercialVehicle(0, "ll-ll-ll", 1000, ownerToAdd) { Description = "New car"};
+            addVehicle.CreateVehicleData();
+
+            // show data
+            foreach (var owner in CarOwner.ReadCarOwners())
+            {
+                Console.WriteLine($"Owner: {owner.Name} (ID = {owner.Id})");
+                if (owner.Vehicles != null)
+                {
+                    int i = 0;
+                    foreach (var vehicle in owner.Vehicles)
+                    {
+                        i++;
+                        if (vehicle is CommercialVehicle)
+                        {
+                            if (vehicle is CommercialVehicle commercialVehicle)
+                            {
+                                Console.WriteLine($"    {i}. Commercial vehicle: Licenseplate: {commercialVehicle.LicensePlate}, Description: {commercialVehicle.Description}, Towing weight: {commercialVehicle.TowingWeight} (ID = {commercialVehicle.Id})");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"    {i}. Licenseplate: {vehicle.LicensePlate}, Description: {vehicle.Description} (ID = {vehicle.Id})");
+                        }
+                    }
+                }
+            }
+
         }
+
+        
     }
 }
