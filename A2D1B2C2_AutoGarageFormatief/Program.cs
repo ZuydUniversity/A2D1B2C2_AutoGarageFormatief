@@ -4,7 +4,7 @@ namespace A2D1B2C2_AutoGarageFormatief
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Autogarage");
 
@@ -19,8 +19,10 @@ namespace A2D1B2C2_AutoGarageFormatief
                         i++;
                         if (vehicle is CommercialVehicle)
                         {
-                            var commercialVehicle = vehicle as CommercialVehicle;
-                            Console.WriteLine($"    {i}. Commercial vehicle: Licenseplate: {commercialVehicle.LicensePlate}, Description: {commercialVehicle.Description}, Towing weight: {commercialVehicle.TowingWeight}");
+                            if (vehicle is CommercialVehicle commercialVehicle)
+                            {
+                                Console.WriteLine($"    {i}. Commercial vehicle: Licenseplate: {commercialVehicle.LicensePlate}, Description: {commercialVehicle.Description}, Towing weight: {commercialVehicle.TowingWeight}");
+                            }
                         }
                         else
                         {
