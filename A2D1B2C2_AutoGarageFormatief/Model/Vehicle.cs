@@ -25,14 +25,20 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
         public string LicensePlate { get; set; }
 
         /// <summary>
-        /// Construcot
+        /// Owner of the car
+        /// </summary>
+        public CarOwner CarOwner { get; set; }
+
+        /// <summary>
+        /// Constructor
         /// </summary>
         /// <param name="id"></param>
         /// <param name="licensePlate"></param>
-        public Vehicle(int id, string licensePlate)
+        public Vehicle(int id, string licensePlate, CarOwner carOwner)
         {
-            Id = id;
+            Id = id;            
             LicensePlate = licensePlate ?? string.Empty;
+            CarOwner = carOwner;
         }
     }
 }
