@@ -1,4 +1,5 @@
-﻿using System;
+﻿using A2D1B2C2_AutoGarageFormatief.DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +40,24 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
             Id = id;            
             LicensePlate = licensePlate ?? string.Empty;
             CarOwner = carOwner;
+        }
+
+        // data access
+
+        /// <summary>
+        /// Create vehicle in data layer
+        /// </summary>
+        public void CreateVehicleData()
+        {
+            new DALSQL().CreateVehicle(this);
+        }
+
+        /// <summary>
+        /// Delete the vehicle from the data layer
+        /// </summary>
+        public void DeleteVehicleData()
+        {
+            new DALSQL().DeleteVehicle(this);
         }
     }
 }

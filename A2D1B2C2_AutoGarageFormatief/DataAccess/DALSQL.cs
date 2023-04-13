@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,44 +37,51 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
             databaseName = "A2D1B2C2_AutoGarageFormatief";
         }
 
-        public List<CarOwner> ReadOwners()
+        /// <summary>
+        /// Create a vehicle
+        /// </summary>
+        /// <param name="vehicle">The vehicle to add</param>
+        /// <exception cref="ArgumentNullException">There is no vehicle</exception>
+        /// <exception cref="Exception">Vehicle has no owner</exception>
+        public void CreateVehicle(Vehicle vehicle)
         {
-            List<CarOwner> Owners = new List<CarOwner>();
-
-            using (SqlConnection connection = new SqlConnection())
+            // checks
+            if (vehicle == null) throw new ArgumentNullException(nameof(vehicle));
+            if (vehicle.CarOwner == null)
             {
-                using (SqlCommand command = new SqlCommand())
-                {
-                    connection.ConnectionString = ConnectionString();
-                    connection.Open();
-                    command.Connection = connection;
-                    command.CommandText = $"select id, name from carowner";
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        // will only iterate once but will prevent error when no results
-                        while (reader.Read())
-                        {
-                            // prevent null reference warnings
-                            var idString = reader[0].ToString() ?? "0";
-                            var nameString = reader[1].ToString() ?? string.Empty;
-
-                            CarOwner newOwner = new CarOwner(int.Parse(idString), nameString);
-
-                            // get vehicles
-                            newOwner.Vehicles = GetVehicles(newOwner);
-
-                            // add to list
-                            Owners.Add(newOwner);
-                        }
-                    }
-                    connection.Close();
-                }
+                throw new Exception("No car owner!");
             }
-            return Owners;
+
+            // add 
+            using (SqlConnection connection = new SqlConnection(ConnectionString()))
+            {
+                string sql = "insert into vehicle (Description, LicensePlate, TowingWeight, CarOwnerId) VALUES (@description, @licenseplate, @towingweight, @ownerid)";
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@description", vehicle.Description);
+                    command.Parameters.AddWithValue("@licenseplate", vehicle.LicensePlate);
+                    command.Parameters.AddWithValue("@ownerid", vehicle.CarOwner.Id.ToString());
+
+                    // add towing weight if commercial vehicle                   
+                    command.Parameters.AddWithValue("@towingweight", vehicle is CommercialVehicle comm ? comm.TowingWeight : 0);
+
+                    command.ExecuteNonQuery();
+
+                    command.CommandText = "SELECT CAST(@@Identity as INT);";
+                    int addId = (int)command.ExecuteScalar();
+                    vehicle.Id = addId;
+                }
+                connection.Close();
+            }
         }
 
-        public List<Vehicle> GetVehicles(CarOwner carOwner)
+        /// <summary>
+        /// Read vehicles for a owner
+        /// </summary>
+        /// <param name="carOwner">The owner to get the vehicles for</param>
+        /// <returns>A list with vehicles</returns>
+        public List<Vehicle> ReadVehicles(CarOwner carOwner)
         {
             List<Vehicle> vehicles = new List<Vehicle>();
 
@@ -114,5 +122,101 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
                 }
             }
         }
+
+        /// <summary>
+        /// Update vehicle
+        /// </summary>
+        /// <param name="vehicle">The vehicle to update</param>
+        /// <exception cref="ArgumentNullException">No vehicle given</exception>
+        /// <exception cref="Exception">Vehicle has no id so doesn't exist in database</exception>
+        public void UpdateVehicle(Vehicle vehicle)
+        {
+            // checks
+            if (vehicle == null)
+            {
+                throw new ArgumentNullException(nameof(vehicle));
+            }
+
+            if (vehicle.Id == 0)
+            {
+                throw new Exception("You have to insert first!");
+            }
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString()))
+            {
+                connection.Open();
+                string sql = $"update vehicle set description = @description, licenseplate = @licenseplate, towingweight = @weigt where id = @vehicleid;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@description", vehicle.Description);
+                    command.Parameters.AddWithValue("@licenseplate", vehicle.LicensePlate);
+                    // only set towing weight when commercial vehicle
+                    command.Parameters.AddWithValue("@weigt", vehicle is CommercialVehicle commercialVehicle ? commercialVehicle.TowingWeight : 0);
+                    command.Parameters.AddWithValue("@vehicleid", vehicle.Id);
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+
+        }
+
+        /// <summary>
+        /// Delete the vehicle
+        /// </summary>
+        /// <param name="vehicle">The vehicle to delete</param>
+        public void DeleteVehicle(Vehicle vehicle)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString()))
+            {
+                connection.Open();
+                string sql = "delete from vehicle where id = @id";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@id", vehicle.Id);
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+
+        public List<CarOwner> ReadOwners()
+        {
+            List<CarOwner> Owners = new List<CarOwner>();
+
+            using (SqlConnection connection = new SqlConnection())
+            {
+                using (SqlCommand command = new SqlCommand())
+                {
+                    connection.ConnectionString = ConnectionString();
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = $"select id, name from carowner";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        // will only iterate once but will prevent error when no results
+                        while (reader.Read())
+                        {
+                            // prevent null reference warnings
+                            var idString = reader[0].ToString() ?? "0";
+                            var nameString = reader[1].ToString() ?? string.Empty;
+
+                            CarOwner newOwner = new CarOwner(int.Parse(idString), nameString);
+
+                            // get vehicles
+                            newOwner.Vehicles = ReadVehicles(newOwner);
+
+                            // add to list
+                            Owners.Add(newOwner);
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            return Owners;
+        }
+
+    
+    
     }
 }
