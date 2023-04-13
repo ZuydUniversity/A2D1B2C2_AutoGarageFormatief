@@ -6,12 +6,29 @@ using System.Threading.Tasks;
 
 namespace A2D1B2C2_AutoGarageFormatief.Model
 {
+    /// <summary>
+    /// Vehicle (parent) class
+    /// </summary>
     public class Vehicle
     {
+        /// <summary>
+        /// Unique identifier
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Description of the vehicle
+        /// </summary>
         public string? Description{ get; set; }
+        /// <summary>
+        /// License plate of the vehicle
+        /// </summary>
         public string LicensePlate { get; set; }
 
+        /// <summary>
+        /// Construcot
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="licensePlate"></param>
         public Vehicle(int id, string licensePlate)
         {
             Id = id;
