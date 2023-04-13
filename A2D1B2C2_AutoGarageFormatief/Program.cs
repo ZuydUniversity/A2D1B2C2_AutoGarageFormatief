@@ -21,14 +21,53 @@ namespace A2D1B2C2_AutoGarageFormatief
                         {
                             if (vehicle is CommercialVehicle commercialVehicle)
                             {
-                                Console.WriteLine($"    {i}. Commercial vehicle: Licenseplate: {commercialVehicle.LicensePlate}, Description: {commercialVehicle.Description}, Towing weight: {commercialVehicle.TowingWeight}");
+                                Console.WriteLine($"    {i}. Commercial vehicle: Licenseplate: {commercialVehicle.LicensePlate}, Description: {commercialVehicle.Description}, Towing weight: {commercialVehicle.TowingWeight} (ID = {commercialVehicle.Id})");
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"    {i}. Licenseplate: {vehicle.LicensePlate}, Description: {vehicle.Description}");
+                            Console.WriteLine($"    {i}. Licenseplate: {vehicle.LicensePlate}, Description: {vehicle.Description} (ID = {vehicle.Id})");
                         }
                     }
+                }
+            }
+
+            // get vehicle to update
+            int vehicleToUpdateId = 0;
+            while (vehicleToUpdateId == 0)
+            {
+                try
+                {
+                    Console.WriteLine("Enter vehicle id to update: ");
+                    var input = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(input))
+                    {
+                        vehicleToUpdateId = Int32.Parse(input);
+                    }
+                }
+                catch (Exception)
+                {
+                    // do nothing, stay in loop                    
+                }
+            }
+            Vehicle vehicleUpdate = Vehicle.ReadVehicleData(vehicleToUpdateId);
+            
+            // get new license plate
+            string licensePlate = string.Empty;
+            while (licensePlate == string.Empty)
+            {
+                try
+                {
+                    Console.WriteLine("Enter license plate: ");
+                    licensePlate = Console.ReadLine();
+                    vehicleUpdate.LicensePlate = licensePlate;
+                    vehicleUpdate.UpdateVehicleData();                                        
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    licensePlate = string.Empty;
+                    throw;                    
                 }
             }
 

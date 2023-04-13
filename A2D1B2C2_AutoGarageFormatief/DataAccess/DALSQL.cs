@@ -123,6 +123,51 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
             }
         }
 
+
+        public Vehicle ReadVehicle(int id)
+        {
+            using (SqlConnection connection = new SqlConnection())
+            {
+                using (SqlCommand command = new SqlCommand())
+                {
+                    connection.ConnectionString = ConnectionString();
+                    connection.Open();
+                    command.Connection = connection;
+                    command.CommandText = $"select id, description, LicensePlate, TowingWeight from vehicle where id = @id";
+                    command.Parameters.AddWithValue("@id", id);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        // will run only once
+                        while (reader.Read())
+                        {
+                            // prevent null reference warnings
+                            var idString = reader[0].ToString() ?? "0";
+                            var descriptionString = reader[1].ToString() ?? string.Empty;
+                            var licensePlateString = reader[2].ToString() ?? string.Empty;
+                            var towingWeigtString = reader[3].ToString() ?? string.Empty;
+                            
+                            // todo get owner
+
+                            Vehicle newVehicle;
+                            if (String.IsNullOrEmpty(towingWeigtString))
+                            {
+                                newVehicle = new Vehicle(Int32.Parse(idString), licensePlateString, null);
+                            }
+                            else
+                            {
+                                newVehicle = new CommercialVehicle(Int32.Parse(idString), licensePlateString, Int32.Parse(towingWeigtString), null);
+                            }
+                            newVehicle.Description = descriptionString;
+                            return newVehicle;
+                        }
+                    }
+                }
+            }
+            return default;
+        }
+
+
         /// <summary>
         /// Update vehicle
         /// </summary>

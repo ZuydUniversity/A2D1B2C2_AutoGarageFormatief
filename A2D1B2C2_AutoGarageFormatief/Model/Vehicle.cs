@@ -42,14 +42,47 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
             CarOwner = carOwner;
         }
 
+        /// <summary>
+        /// Check licenseplate: should have 8 characters and 2 -
+        /// </summary>
+        /// <returns>True if correct</returns>
+        private bool CheckLicensePlate()
+        {
+            return LicensePlate.Length == 8 && LicensePlate.Count(lp => lp == '-') == 2;
+        }
+
         // data access
+
+        public static Vehicle ReadVehicleData(int id)
+        {
+            return new DALSQL().ReadVehicle(id);
+        }
 
         /// <summary>
         /// Create vehicle in data layer
         /// </summary>
         public void CreateVehicleData()
         {
-            new DALSQL().CreateVehicle(this);
+            if (CheckLicensePlate())
+            {
+                new DALSQL().CreateVehicle(this);
+            }
+            else
+            {
+                throw new Exception("Invalid license plate!");
+            }
+        }
+
+        public void UpdateVehicleData()
+        {
+            if (CheckLicensePlate())
+            {
+                new DALSQL().UpdateVehicle(this);
+            }
+            else
+            {
+                throw new Exception("Invalid license plate!");
+            }
         }
 
         /// <summary>
