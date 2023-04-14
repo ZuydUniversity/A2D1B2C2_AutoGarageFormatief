@@ -1,4 +1,5 @@
-﻿using A2D1B2C2_AutoGarageFormatief.Model;
+﻿using A2D1B2C2_AutoGarageFormatief.Exceptions;
+using A2D1B2C2_AutoGarageFormatief.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -42,16 +43,17 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
         /// </summary>
         /// <param name="vehicle">The vehicle to add</param>
         /// <exception cref="ArgumentNullException">There is no vehicle</exception>
-        /// <exception cref="Exception">Vehicle has no owner</exception>
+        /// <exception cref="NoOwnerException">Vehicle has no owner</exception>
+        /// <exception cref="InvalidLicensePlateException">Vehicle has invalid license plate</exception>
         public void CreateVehicle(Vehicle vehicle)
         {
             // checks
             if (vehicle == null) throw new ArgumentNullException(nameof(vehicle));
             if (vehicle.CarOwner == null)
-            {
-                throw new Exception("No car owner!");
-            }
-
+                throw new NoOwnerException();
+            if (!vehicle.CheckLicensePlate())
+                throw new InvalidLicensePlateException();
+            
             // add 
             using (SqlConnection connection = new SqlConnection(ConnectionString()))
             {

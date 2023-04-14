@@ -1,4 +1,5 @@
 ﻿using A2D1B2C2_AutoGarageFormatief.DataAccess;
+using A2D1B2C2_AutoGarageFormatief.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,10 +71,14 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
             }
             else
             {
-                throw new Exception("Invalid license plate!");
+                throw new InvalidLicensePlateException();
             }
         }
 
+        /// <summary>
+        /// Update the vehicle
+        /// </summary>
+        /// <exception cref="Exception">Invalidlicenseplate</exception>
         public void UpdateVehicleData()
         {
             if (CheckLicensePlate())
@@ -82,7 +87,7 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
             }
             else
             {
-                throw new Exception("Invalid license plate!");
+                throw new InvalidLicensePlateException();
             }
         }
 

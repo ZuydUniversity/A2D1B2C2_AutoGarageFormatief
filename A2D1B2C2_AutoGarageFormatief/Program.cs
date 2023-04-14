@@ -75,7 +75,7 @@ namespace A2D1B2C2_AutoGarageFormatief
 
             Console.WriteLine("Create vehicle for owner 1");
             var ownerToAdd = CarOwner.ReadCarOwners().FirstOrDefault(o => o.Id == 1);
-            Vehicle addVehicle = new CommercialVehicle(0, "ll-ll-ll", 1000, ownerToAdd) { Description = "New car"};
+            Vehicle addVehicle = new CommercialVehicle(0, "vl-ll-ll", 1000, ownerToAdd) { Description = "New car"};
             addVehicle.CreateVehicleData();
 
             // show data
