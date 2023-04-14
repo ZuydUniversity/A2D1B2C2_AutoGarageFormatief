@@ -17,6 +17,15 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
         public int TowingWeight { get; set; }
 
         /// <summary>
+        /// Commercial vehicle should also start with a V
+        /// </summary>
+        /// <returns></returns>
+        public override bool CheckLicensePlate()
+        {
+            return base.CheckLicensePlate() && LicensePlate.ToLower().StartsWith('v');
+        }
+
+        /// <summary>
         /// The constructor
         /// </summary>
         /// <param name="id"Id of the vehicle></param>

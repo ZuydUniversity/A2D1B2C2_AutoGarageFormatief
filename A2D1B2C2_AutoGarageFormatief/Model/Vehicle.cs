@@ -46,8 +46,9 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
         /// Check licenseplate: should have 8 characters and 2 -
         /// </summary>
         /// <returns>True if correct</returns>
-        private bool CheckLicensePlate()
+        public virtual bool CheckLicensePlate()
         {
+            // check length equals 8 and there are two - characters
             return LicensePlate.Length == 8 && LicensePlate.Count(lp => lp == '-') == 2;
         }
 
