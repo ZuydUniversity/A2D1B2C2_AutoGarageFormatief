@@ -126,7 +126,7 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
         }
 
 
-        public Vehicle ReadVehicle(int id)
+        public Vehicle? ReadVehicle(int id)
         {
             using (SqlConnection connection = new SqlConnection())
             {
@@ -135,7 +135,7 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
                     connection.ConnectionString = ConnectionString();
                     connection.Open();
                     command.Connection = connection;
-                    command.CommandText = $"select id, description, LicensePlate, TowingWeight from vehicle where id = @id";
+                    command.CommandText = $"select id, description, LicensePlate, TowingWeight, carownerid from vehicle where id = @id";
                     command.Parameters.AddWithValue("@id", id);
 
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -148,20 +148,24 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
                             var descriptionString = reader[1].ToString() ?? string.Empty;
                             var licensePlateString = reader[2].ToString() ?? string.Empty;
                             var towingWeigtString = reader[3].ToString() ?? string.Empty;
-                            
-                            // todo get owner
+                            var ownerIdString = reader[4].ToString() ?? string.Empty;
 
-                            Vehicle newVehicle;
-                            if (String.IsNullOrEmpty(towingWeigtString))
+                            // todo get owner (slechte code hieronder....)
+                            var theOwner = this.ReadOwners().FirstOrDefault(o => o.Id == Int32.Parse(ownerIdString));
+                            if (theOwner != null)
                             {
-                                newVehicle = new Vehicle(Int32.Parse(idString), licensePlateString, null);
-                            }
-                            else
-                            {
-                                newVehicle = new CommercialVehicle(Int32.Parse(idString), licensePlateString, Int32.Parse(towingWeigtString), null);
-                            }
-                            newVehicle.Description = descriptionString;
-                            return newVehicle;
+                                Vehicle newVehicle;
+                                if (String.IsNullOrEmpty(towingWeigtString))
+                                {
+                                    newVehicle = new Vehicle(Int32.Parse(idString), licensePlateString, theOwner);
+                                }
+                                else
+                                {
+                                    newVehicle = new CommercialVehicle(Int32.Parse(idString), licensePlateString, Int32.Parse(towingWeigtString), theOwner);
+                                }
+                                newVehicle.Description = descriptionString;
+                                return newVehicle;
+                            }                            
                         }
                     }
                 }

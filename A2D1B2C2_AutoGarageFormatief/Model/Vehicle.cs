@@ -55,7 +55,7 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
 
         // data access
 
-        public static Vehicle ReadVehicleData(int id)
+        public static Vehicle? ReadVehicleData(int id)
         {
             return new DALSQL().ReadVehicle(id);
         }
