@@ -12,6 +12,21 @@ Het doel van deze formatieve toets is om vast te stellen of de vereiste voorkenn
 
 **Tijdsinschatting:** Deze opdracht zou in één dag geprogrammeerd moeten kunnen worden.
 
+## 🎓 Leeronderwerpen
+
+Deze formatieve opdracht test of je de volgende onderwerpen beheerst:
+
+1. **Classes maken** - Definiëren van klassen zoals `Vehicle`, `CarOwner` en `CommercialVehicle`
+2. **Objecten maken** - Instantiëren van objecten en gebruik van constructors
+3. **Attributen en properties maken** - Declareren van velden en properties met getter/setter
+4. **Access modifiers** - Correct gebruik van `public`, `protected` en `private`
+5. **Methods maken** - Implementeren van methoden en business logic
+6. **Encapsulation** - Data hiding en het gebruik van properties voor gecontroleerde toegang
+7. **Inheritance** - Overerving van `Vehicle` naar `CommercialVehicle`
+8. **Polymorphisme** - Gebruik van virtual/override methoden (zoals `CheckLicensePlate()`)
+9. **Data access layer maken** - Implementatie van CRUD operaties in `DALSQL` klasse
+10. **Database maken** - Ontwerpen en implementeren van SQL Server database schema
+
 ## 📝 Opdrachtbeschrijving
 
 De eigenaar van een autogarage wil bijhouden welke voertuigen bij welke eigenaar horen. Er bestaan gewone auto's en bedrijfswagens. Voor bedrijfswagens wordt een maximaal trekgewicht geregistreerd.
