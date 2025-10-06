@@ -118,7 +118,7 @@ flowchart TB
 
 ## 📞 Contact
 
-Voor vragen over deze opdracht, neem contact op met de docent of raadpleeg de cursusmateriaal op Q:\.
+Voor vragen over deze opdracht, neem contact op met de docent.
 
 ---
 

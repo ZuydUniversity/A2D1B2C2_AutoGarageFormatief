@@ -1,12 +1,6 @@
 ﻿using A2D1B2C2_AutoGarageFormatief.Exceptions;
 using A2D1B2C2_AutoGarageFormatief.Model;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 
 namespace A2D1B2C2_AutoGarageFormatief.DataAccess
 {
@@ -53,7 +47,7 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
                 throw new NoOwnerException();
             if (!vehicle.CheckLicensePlate())
                 throw new InvalidLicensePlateException();
-            
+
             // add 
             using (SqlConnection connection = new SqlConnection(ConnectionString()))
             {
@@ -165,7 +159,7 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
                                 }
                                 newVehicle.Description = descriptionString;
                                 return newVehicle;
-                            }                            
+                            }
                         }
                     }
                 }
@@ -267,7 +261,7 @@ namespace A2D1B2C2_AutoGarageFormatief.DataAccess
             return Owners;
         }
 
-    
-    
+
+
     }
 }

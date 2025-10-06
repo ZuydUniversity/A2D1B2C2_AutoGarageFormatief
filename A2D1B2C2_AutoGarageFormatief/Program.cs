@@ -1,5 +1,4 @@
 ﻿using A2D1B2C2_AutoGarageFormatief.Model;
-using System.Threading.Channels;
 
 namespace A2D1B2C2_AutoGarageFormatief
 {
@@ -30,7 +29,7 @@ namespace A2D1B2C2_AutoGarageFormatief
                 }
             }
             Vehicle? vehicleUpdate = Vehicle.ReadVehicleData(vehicleToUpdateId);
-            
+
             // get new license plate
             string? licensePlate = string.Empty;
             while (licensePlate == string.Empty && vehicleUpdate != null)
@@ -40,13 +39,13 @@ namespace A2D1B2C2_AutoGarageFormatief
                     Console.WriteLine("Enter license plate: ");
                     licensePlate = Console.ReadLine();
                     vehicleUpdate.LicensePlate = licensePlate ?? string.Empty;
-                    vehicleUpdate.UpdateVehicleData();                                        
+                    vehicleUpdate.UpdateVehicleData();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     licensePlate = string.Empty;
-                    throw;                    
+                    throw;
                 }
             }
 
@@ -69,7 +68,7 @@ namespace A2D1B2C2_AutoGarageFormatief
 
             // show data
             ShowData();
-            
+
         }
 
         private static void ShowData()

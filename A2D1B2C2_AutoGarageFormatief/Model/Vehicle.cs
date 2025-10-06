@@ -1,10 +1,5 @@
 ﻿using A2D1B2C2_AutoGarageFormatief.DataAccess;
 using A2D1B2C2_AutoGarageFormatief.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace A2D1B2C2_AutoGarageFormatief.Model
 {
@@ -20,7 +15,7 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
         /// <summary>
         /// Description of the vehicle
         /// </summary>
-        public string? Description{ get; set; }
+        public string? Description { get; set; }
         /// <summary>
         /// License plate of the vehicle
         /// </summary>
@@ -38,7 +33,7 @@ namespace A2D1B2C2_AutoGarageFormatief.Model
         /// <param name="licensePlate"></param>
         public Vehicle(int id, string licensePlate, CarOwner carOwner)
         {
-            Id = id;            
+            Id = id;
             LicensePlate = licensePlate ?? string.Empty;
             CarOwner = carOwner;
         }
